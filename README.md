@@ -18,18 +18,22 @@ Virtualpy是一个python虚拟环境管理工具。使用它可以方便的创�
 
 命令：
 
-virtualpy help:获取帮助
+* virtualpy help:获取帮助
 
-delete env   删除env虚拟环境
+* delete env   删除env虚拟环境
 
-create env   创建env的虚拟环境。activate env 在env的虚拟环境中执行命令。
-   	-c: 干净的python环境
+* create env   创建env的虚拟环境。activate env 在env的虚拟环境中执行命令。
+     	* -c: 干净的python环境
 
-activate env 在env的虚拟环境中执行命令。
+* activate env 在env的虚拟环境中执行命令。
+  * q:退出（如果有未执行的命令，则执行完命令后退出）
+  * run:立即执行命令列表的命令，不退出交互
+  * list:列出所有待执行的命令
+  * del number,...:删除命令列表的相应命令
 
-listall      列出所有的虚拟环境
+* listall      列出所有的虚拟环境
 
 ## 版本：
 
-V0.1
+V0.2
 

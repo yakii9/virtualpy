@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import os
 import fire
 import shutil
+import re
 
 def create(*args):
     if len(args) == 1:
@@ -23,13 +25,21 @@ def create(*args):
 def activate(name):
     if name in env_list:
         global command_list
-        get_input(name)
+        flag = get_input(name)
         if len(command_list) > 0:
             command = "cd C:\\Users\\tyler\\.virtualenvs\\" + name + "\\Scripts && activate"
             for i in command_list:
                 command += " && " + i
-        os.system(command)
-        print("当前虚拟环境为：" + name + "。命令执行完成！")
+            os.system(command)
+            command_list = []
+            print("当前虚拟环境为：" + name + "。命令执行完成！")
+        else:
+            if flag == 0:
+                print("成功退出！")
+            else:
+                print("没有可以执行的命令！")
+        if flag == 1:
+            return activate(name)
     else:
         print("虚拟环境不存在！切换失败！")
 def delete(name):
@@ -56,13 +66,30 @@ def help():
     print(command_help)
 
 def get_input(name):
-    command = input("当前的虚拟环境为：("+ name +")请输入要执行的命令：\n")
+    command = input(name + "> ")
     global command_list
-    if command != "q":
-        command_list.append(command)
-        get_input(name)
-    else:
+    if command == "q":
         return 0
+    if command == "run":
+        return 1
+    if command == "list":
+        for i in command_list:
+            print(str(command_list.index(i)+1) + ":" + i)
+        return get_input(name)
+    prog= re.compile(r'^del [0-9]+([,，][0-9]+)*\s*',flags=0)
+    if prog.match(command):
+        del_list = re.split(r'[,\s]', command)
+        del_list = del_list[1:]
+        command_list_tem = []
+        for i in range(len(command_list)):
+            if str(i+1) not in del_list:
+                command_list_tem.append(command_list[i])
+        command_list = command_list_tem
+        print("Delete successfully!")
+        return get_input(name)
+    else:
+        command_list.append(command)
+        return get_input(name)
 if __name__ == '__main__':
     command_list = []
     path = "C:\\Users\\tyler\\.virtualenvs"
